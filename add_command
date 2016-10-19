@@ -1,0 +1,2 @@
+cp $1 ~/bin/$1
+echo "echo '$1'" >> ~/bin/commands_list
