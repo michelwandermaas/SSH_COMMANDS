@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Dependencies: xdotool (sudo apt-get install xdotool)
+
+# Functions
+
+# add command so it works with ssh (no gui)
+# DISPLAY=:0
+
+save_active () {
+    # get current workspace
+    ActiveDesktop="$( DISPLAY=:0 xdotool get_desktop)"
+    # get current active window ID
+    ActiveWindowID="$( DISPLAY=:0 xdotool getactivewindow)"
+    # get current active window name
+    ActiveWindowName="$( DISPLAY=:0 xdotool getwindowname "$ActiveWindowID")"
+}
+
+restore_active(){
+    DISPLAY=:0 xdotool set_desktop "$ActiveDesktop"
+    # Activating the root window (Desktop) results in an error message, so we
+    # try to avoid it
+    [[ "$ActiveWindowName" != "Desktop" ]] && DISPLAY=:0 xdotool windowactivate "$ActiveWindowID"
+}
+
+command_press_button(){
+  DISPLAY=:0 xdotool search --name ${PROGRAM}  windowactivate
+  sleep 0.1
+  DISPLAY=:0 xdotool key --clearmodifiers "${KEY}"
+}
+
+# Main
+if [ $# -eq 1 ] && [ $1 == '--help' ]; then
+	echo 'USAGE: generic_command PROGRAM_NAME KEY_NAME'
+	echo 'USAGE: generic_command KEY_NAME'
+	echo 'If you do not specify the program, it should work on the open window, but it is not guaranteed'
+	exit
+
+elif [ $# -eq 0 ] || [ $# -gt 2 ]; then
+	echo 'Wrong number of arguments, use --help to see the usage.'
+	exit
+elif [ $# -eq 2 ]; then
+	export PROGRAM=$1
+	export KEY=$2
+elif [ $# -eq 1 ]; then
+	export PROGRAM='none'
+        export KEY=$1
+fi
+# apparently I need to do this, otherwise it will not work. it would not work only with $1 and $2
+
+## save active window and desktop
+save_active
+## send command in $2 to program $1
+command_press_button
+## restore previously active window/desktop
+restore_active
