@@ -1,0 +1,5 @@
+echo 'volume_change'
+echo 'url_open'
+echo 'pause_youtube'
+echo 'fullscreen_youtube'
+echo 'kill_browser'

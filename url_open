@@ -1,0 +1,2 @@
+DISPLAY=:0 google-chrome $1 > /tmp/log.out 2> /tmp/log2.out &
+echo $! > /tmp/browser_pid
