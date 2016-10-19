@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cp ~/bin/commands_list .
-git push origin master
+git commit -a -m "${1}"
