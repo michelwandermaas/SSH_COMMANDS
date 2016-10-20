@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# use generic_command to go over the options in the player and go to the next video
+# see xdotool key list https://cgit.freedesktop.org/xorg/proto/x11proto/plain/keysymdef.h
+
+generic_command 0xff09 #tab
+sleep 0.1
+generic_command 0xff09
+sleep 0.1
+generic_command 0xff09
+sleep 0.1
+generic_command 0xff8d
